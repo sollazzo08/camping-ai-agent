@@ -1,0 +1,29 @@
+# 🔒 Secrets
+.env
+
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+
+# 📦 Virtual Environment
+.venv/
+venv/
+ENV/
+
+# 💻 Mac/Linux/VSCode
+.DS_Store
+.idea/
+.vscode/
+
+# 📄 Logs
+*.log
+
+# 📦 Jupyter / Notebooks (optional)
+.ipynb_checkpoints/
+
+# 🤖 Cache from OpenAI or tools
+.cache/
