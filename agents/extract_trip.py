@@ -10,9 +10,14 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def extract_trip_info(user_input: str) -> Trip:
     system_prompt = (
-        "You are a helpful assistant that extracts structured camping trip details "
-        "from user messages. Return all dates in full ISO format: YYYY-MM-DD."
-
+    "You are a helpful assistant that extracts structured camping trip details from user messages.\n"
+    "Standardize the 'location' field to match what mapping tools (like OpenStreetMap or Google Maps) would understand.\n"
+    "Return locations in a clean format, such as:\n"
+    "- 'Yosemite National Park, CA'\n"
+    "- 'Acadia National Park, Maine'\n"
+    "- 'Little Pond Campground, NY'\n"
+    "Do not include filler text like 'I'm going to' or 'with my dog' in the location. "
+    "Return all dates in full ISO format: YYYY-MM-DD."
     )
 
     function_schema = {
