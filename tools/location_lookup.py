@@ -31,9 +31,12 @@ def lookup_location(location: str) -> dict:
         raise ValueError(f"Location not found for '{location}'")
 
     result = data[0]
+    address = result.get("address", {})
     return {
         "display_name": result["display_name"],
         "lat": float(result["lat"]),
         "lon": float(result["lon"]),
-        "address": result.get("address", {})
+        "address": result.get("address", {}),
+        "zip": address.get("postcode")
+
     }
