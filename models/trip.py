@@ -1,9 +1,11 @@
-from pydantic import BaseModel, Field
 from typing import List, Optional
+from pydantic import BaseModel, Field
 from datetime import date
 
 class Trip(BaseModel):
     location: str = Field(..., description="The location of the camping trip")
+    latitude: float = Field(..., description="Latitude of the location")
+    longitude: float = Field(..., description="Longitude of the location")
     start_date: Optional[date] = Field(default=None, description="Start date of the trip")
     end_date: Optional[date] = Field(default=None, description="End date of the trip")
     group_size: Optional[int] = Field(default=1, description="Number of people going")
