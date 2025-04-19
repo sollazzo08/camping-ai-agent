@@ -6,7 +6,4 @@ def run_trip_agent(user_input: str) -> dict:
     trip = extract_trip_info(user_input)
 
     # 3. Combine both results
-    return {
-        "trip": trip["trip"],
-        "weather": trip.get("weather") 
-    }
+    return trip
