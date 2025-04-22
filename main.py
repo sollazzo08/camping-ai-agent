@@ -1,15 +1,20 @@
-from workflows.trip_workflow import run_trip_agent
+from generate_checklist import generate_checklist
 
 def main():
-    user_input = input("Tell me about your camping trip: ")
-    result = run_trip_agent(user_input)
 
-    print("\n Trip Info:")
-    print(result.get("trip"))
+    trip_data = {
+        "location": "Little Pond Campground, NY",
+        "latitude": 42.0132,
+        "longitude": -74.5938,
+        "start_date": "2025-06-15",
+        "end_date": "2025-06-17",
+        "group_size": 2,
+        "has_dog": True,
+        "activities": ["hiking", "campfire cooking"]
+}
 
-    print("\n Weather Info:")
-    print(result.get("weather"))
-
+    checklist = generate_checklist(trip_data)
+    print(checklist)
 
 
 if __name__ == "__main__":
