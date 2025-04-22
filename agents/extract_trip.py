@@ -3,11 +3,12 @@ import json
 from openai import OpenAI
 from dotenv import load_dotenv
 from pydantic import ValidationError
-from models.trip import Trip
+from models.checklist import Checklist
 import requests
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 def extract_trip_info(user_input: str) -> dict:
 
@@ -38,28 +39,6 @@ def extract_trip_info(user_input: str) -> dict:
             print(f"Error fetching weather data: {e}")
             return None
 
-    function_schema = {
-        "name": "extract_trip_info",
-        "description": "Extract camping trip details from user input.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "location": {"type": "string"},
-                "latitude": {"type": "number"},
-                "longitude": {"type": "number"},
-                "start_date": {"type": "string", "format": "date"},
-                "end_date": {"type": "string", "format": "date"},
-                "group_size": {"type": "integer"},
-                "activities": {
-                    "type": "array",
-                    "items": {"type": "string"}
-                },
-                "include_weather": {"type": "boolean"}
-            },
-            "required": ["location", "latitude", "longitude"]
-        }
-    }
-
     tools = [
         {
             "type": "function",
@@ -86,12 +65,25 @@ def extract_trip_info(user_input: str) -> dict:
     ]
 
 
-    system_prompt = (
-        "You are a helpful assistant that extracts structured camping trip details from user messages.\n"
-        "Standardize the 'location' field to match what mapping tools would understand.\n"
-        "Also return the latitude and longitude of the location.\n"
-        "Return all dates in full ISO format: YYYY-MM-DD."
-    )
+    system_prompt = """You are a helpful assistant that generates personalized camping packing checklists.
+
+    You will receive structured input containing:
+    - The campsite location and weather forecast
+    - Trip start and end dates
+    - Group size
+    - Whether a dog is coming
+    - A list of planned activities
+
+    Your job is to generate a concise, well-organized packing list tailored to the user’s trip.
+
+    Consider:
+    - The number of people (e.g., 3 sleeping bags for 3 people)
+    - The weather forecast (e.g., rain gear, cold-weather layers, sun protection)
+    - Any pets included in the trip
+    - The selected activities (e.g., swimming → swimsuit, fishing → gear)
+
+    Only include relevant, practical items. Avoid duplicates across categories."""
+
 
     messages = [
             {"role": "system", "content": system_prompt},
